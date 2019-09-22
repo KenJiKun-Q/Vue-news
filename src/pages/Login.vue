@@ -2,7 +2,7 @@
   <div class="container">
     <!-- 关闭按钮 -->
     <div class="close">
-      <span class="iconfont iconfont-test"></span>
+      <span class="iconfont iconicon-test"></span>
     </div>
 
     <!-- logo -->
@@ -10,17 +10,44 @@
       <span class="iconfont iconnew"></span>
     </div>
 
-    <!-- 用户名 -->
-    <AuthInput placeholder="手机号" :value="form.username" @input="handleUsername"></AuthInput>
-    <!-- 密码 -->
-    登录按钮
-    <button @click="handleSubmit">登录</button>
+    <div class="inputs">
+      <!-- 输入用户名组件 -->
+      <AuthInput
+        placeholder="手机号"
+        :value="form.username"
+        @input="handleUsername"
+        :rule="/^1[0-9]{4,10}$/"
+        err_message="手机号格式不正确"
+      ></AuthInput>
+
+      <!-- 密码 -->
+      <AuthInput
+        placeholder="密码"
+        type="password"
+        v-model="form.password"
+        :rule="/^[0-9a-zA-Z]{3,12}$/"
+        err_message="密码格式不正确"
+      ></AuthInput>
+    </div>
+
+    <p class="tips">
+      未有账号?
+      <router-link to="/register">点击注册</router-link>
+    </p>
+
+    <!-- 登录按钮 -->
+    <!-- <button @click="handleSubmit">登录</button> -->
+    <AuthButton text="登录" @click="handleSubmit"></AuthButton>
   </div>
 </template>
 
 <script>
-// 导入输入框组件
+//导入请求库
+import axios from "axios";
+
+// 导入组件
 import AuthInput from "@/components/AuthInput";
+import AuthButton from "@/components/AuthButton";
 
 export default {
   data() {
@@ -34,7 +61,8 @@ export default {
   },
   //注册组件
   components: {
-    AuthInput
+    AuthInput,
+    AuthButton
   },
 
   methods: {
@@ -44,7 +72,22 @@ export default {
     },
 
     handleSubmit() {
-      console.log(this.form);
+      // console.log(this.form);
+      axios({
+        // url:"http://127.0.0.1:3000/login",
+        url: "/login",
+        method: "POSt",
+        data: this.form
+        //then.的回调函数相当于success
+      }).then(res => {
+        // console.log(res)
+        let { message } = res.data;
+
+        if (message === "登录成功") {
+          //跳转首页
+          this.$router.push("/");
+        }
+      });
     }
   }
 };
@@ -55,6 +98,7 @@ export default {
 // scoped 代表作用域样式
 // lang 声明样式的类型
 .container {
+  box-sizing: border-box;
   padding: 20px;
 }
 
@@ -72,6 +116,21 @@ export default {
     display: block;
     font-size: 126 / 360 * 100vw;
     color: #d81e06;
+  }
+}
+
+.inputs {
+  input {
+    margin-bottom: 20px;
+  }
+}
+
+.tips {
+  text-align: right;
+  margin-bottom: 20px;
+  font-size: 15px;
+  a {
+    color: #3385ff;
   }
 }
 </style>

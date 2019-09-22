@@ -2,18 +2,34 @@ import Vue from "vue"
 //路由 1.导入路由构造函数
 import VueRouter from "vue-router"
 
+//导入vant-ui组件
+import vant from 'vant'
+
+//导入axios
+import axios from "axios"
+
 //导入app.vue
 import App from "./App.vue"
 import Login from "@/pages/Login"
+import Register from "@/pages/Register"
+
+//把axios挂载到原型
+Vue.prototype.$axios = axios   //this.$axios
+
+//基准路径,以后每次请求都自动在前面加上改路径
+axios.defaults.baseURL = "http://127.0.0.1:3000"
 
 
 //在.vue文件中药使用router-link或者router-view需要注册下插件
 Vue.use(VueRouter)
+Vue.use(vant)
+
 
 
 //路由 2.创建路由配置
 const routes = [
     { path:"/login",component: Login },
+    { path:"/register" ,component: Register }
 
 ]
 
