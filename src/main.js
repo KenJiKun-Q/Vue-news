@@ -10,6 +10,7 @@ import Login from "@/pages/Login"
 //在.vue文件中药使用router-link或者router-view需要注册下插件
 Vue.use(VueRouter)
 
+
 //路由 2.创建路由配置
 const routes = [
     { path:"/login",component: Login },
