@@ -4,6 +4,7 @@ import VueRouter from "vue-router"
 
 //导入vant-ui组件
 import vant from 'vant'
+import { Toast } from 'vant'
 
 //导入axios
 import axios from "axios"
@@ -28,6 +29,7 @@ Vue.use(vant)
 
 //路由 2.创建路由配置
 const routes = [
+    // { path:"/",component: Login },
     { path:"/login",component: Login },
     { path:"/register" ,component: Register }
 
@@ -36,6 +38,22 @@ const routes = [
 // 路由3.创建对象实例
 const router = new VueRouter({
     routes
+})
+
+//axios的统一的拦截器,拦截响应
+//固定的声明
+axios.interceptors.response.use( res => {
+    //拦截响应，做统一处理 
+    let { message,statusCode } = res.data
+    // console.log( message )
+    console.log(message)
+
+    if(statusCode === 401 ){
+        Toast.fail(message)
+    }
+
+    return res
+
 })
 
 new Vue({
