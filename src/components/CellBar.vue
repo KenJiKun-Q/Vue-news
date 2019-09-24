@@ -24,7 +24,7 @@ export default {
             align-items: center;
             padding-right: 10px;
             height: 48 / 360 * 100vw;
-            border-bottom: 1px #eee solid;
+            border-bottom: 1px rgb(180, 174, 174) solid;
         }
         i{
             display: block;

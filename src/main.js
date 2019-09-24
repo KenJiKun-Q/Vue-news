@@ -42,6 +42,32 @@ const router = new VueRouter({
     routes
 })
 
+//路由守卫,就是一页面跳转之前的拦截器
+//to是要跳转之后的页面,去边度
+//from跳转之前的页面,系边度黎
+//next 必须要调用next()调用才会执行跳转,还可以重定向,next('/login')
+router.beforeEach((to,from,next)=>{
+    // 判断是否有token
+    let hasToken = localStorage.getItem("token")
+    // console.log("token",hasToken)
+
+    // 判断是否有权限登录
+    if(to.path === "/personal"){
+        //判断本地是否有token
+        if(hasToken){
+            //有就跳转
+            next()
+        }else{
+            // 没有的话就跳转到登录页面
+            next("/login")
+        }
+    }else{
+        //所有人都可以访问的页面正常浏览
+        next()
+    }
+})
+
+
 //axios的统一的拦截器,拦截响应
 //固定的声明
 axios.interceptors.response.use( res => {
@@ -53,7 +79,13 @@ axios.interceptors.response.use( res => {
     if(statusCode === 401 ){
         Toast.fail(message)
     }
+//当token过期零,或者token无效,一般引起的原因可能就是token被清空,密码修改
+    if(message === "用户信息验证失败"){
+        // 跳转到登录
+        router.push('/login')
+    }
 
+    //必须要返回res
     return res
 
 })

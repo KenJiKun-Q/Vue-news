@@ -81,9 +81,13 @@ export default {
         //then.的回调函数相当于success
       }).then(res => {
         // console.log(res)
-        let { message } = res.data;
-
+        let { message,data } = res.data;
+        // console.log(res.data)
         if (message === "登录成功") {
+          //把token和id保存到本地
+          localStorage.setItem("token",data.token)
+          localStorage.setItem("user_id",data.user.id)
+
           //跳转首页
           this.$router.push("/personal");
         }
