@@ -15,11 +15,19 @@
       </div>
       <span class="iconfont iconjiantou1"></span>
     </div>
+
+    <!-- 通用条形 -->
+    <CellBar />
   </div>
 </template>
 
 <script>
-export default {};
+import CellBar from "@/components/CellBar"
+export default {
+    components:{
+        CellBar
+    }
+};
 </script>
 
 <style scoped lang="less">
