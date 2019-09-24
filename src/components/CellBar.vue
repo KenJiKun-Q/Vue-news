@@ -1,8 +1,9 @@
 <template>
-    <div class="cell-wrap">
+    <!-- $event -->
+    <div class="cell-wrap" @click="$emit('click',$event)">
         <div class="cell">
-            <span>我的关注</span>
-            <i>关注的用户</i>
+            <span>{{label}}</span>
+            <i>{{text}}</i>
             <em class="iconfont iconjiantou1"></em>
         </div>
     </div>
@@ -10,35 +11,29 @@
 
 <script>
 export default {
-
+    props:["label","text"]
 }
 </script>
 
 <style scoped lang="less">
     .cell-wrap{
-        padding: 15px 0 15px 15px;
-
+        padding-left: 10px ;
         .cell{
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-right: 10px;
-            padding-bottom: 15px;
-            height: 24 / 360 * 100vw;
-            border-bottom: 1.5px #eee solid;
+            height: 48 / 360 * 100vw;
+            border-bottom: 1px #eee solid;
         }
         i{
             display: block;
-            flex: 4;
+            flex: 1;
             text-align: right;
-            padding: 0 5px;
+            padding: 0 10px;
             font-size: 13px;
             color: #999;
         }
-        em{
-            font-weight: bold;
-            color: #999;
-            font-size: 13px;
-        }
+  
     }
 </style>
