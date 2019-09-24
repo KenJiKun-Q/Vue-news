@@ -13,6 +13,7 @@ import axios from "axios"
 import App from "./App.vue"
 import Login from "@/pages/Login"
 import Register from "@/pages/Register"
+import Personal from "@/pages/personal"
 
 //把axios挂载到原型
 Vue.prototype.$axios = axios   //this.$axios
@@ -31,7 +32,8 @@ Vue.use(vant)
 const routes = [
     // { path:"/",component: Login },
     { path:"/login",component: Login },
-    { path:"/register" ,component: Register }
+    { path:"/register" ,component: Register },
+    { path:"/personal" ,component: Personal }
 
 ]
 
