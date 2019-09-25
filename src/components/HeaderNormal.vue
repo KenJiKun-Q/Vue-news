@@ -1,7 +1,7 @@
 <template>
 <!-- 个人中心页面模块的头部 -->
   <div class="header">
-      <span class="iconfont iconjiantou2"></span>
+      <span class="iconfont iconjiantou2" @click="$router.back()"></span>
       <h4>编辑资料</h4>
       <span>></span>
   </div>

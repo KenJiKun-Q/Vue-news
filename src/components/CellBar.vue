@@ -4,7 +4,7 @@
         <div class="cell">
             <span>{{label}}</span>
             <!-- 如果type等于password,就显示星号 -->
-            <i>{{type === 'password' ? '******' : text}}</i>
+            <i>{{type === 'password' ? '******' :text }}</i>
             <em class="iconfont iconjiantou1"></em>
         </div>
     </div>

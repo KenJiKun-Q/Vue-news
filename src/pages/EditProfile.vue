@@ -29,13 +29,15 @@
 
     <CellBar label="密码" :text="profile.password" type="password" @click="show2 = !show2"/>
      <!-- 密码编辑输入框 -->
-    <!-- <van-dialog 
+    <van-dialog 
      v-model="show2"
      title="编辑密码"
      show-cancel-button
-     @confirm="handlPassword"> -->
-      <!-- vaule读取昵称 -->
-        <!-- <van-field :value="profile.password" placeholder="请输入密码" ref="password"/> -->
+     @confirm="handlPassword">
+      <!-- vaule读取密码 -->
+        <van-field :value="profile.password" placeholder="请输入密码" ref="password"/>
+    </van-dialog>
+
 
     <CellBar label="性别" :text="profile.gender === 1 ? '男' : '女'" />
   </div>
@@ -54,6 +56,7 @@ export default {
       profile: {},
       //显示弹窗
       show1: false,
+      //密码弹窗
       show2: false
     };
   },
@@ -129,6 +132,15 @@ export default {
         // console.log(value)
         this.editProfile({nickname:value},()=>{
             this.profile.nickname = value
+        })
+    },
+    //编辑密码
+    handlPassword(){
+        //拿到input输入的值
+        let value = this.$refs.password.$refs.input.value;
+        //提交到编辑资料的接口
+        this.editProfile({password : value}, ()=>{
+            this.profile.password =value
         })
     }
   },
