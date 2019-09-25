@@ -13,7 +13,8 @@ import axios from "axios"
 import App from "./App.vue"
 import Login from "@/pages/Login"
 import Register from "@/pages/Register"
-import Personal from "@/pages/personal"
+import Personal from "@/pages/Personal"
+import EditProfile from "@/pages/EditProfile"
 
 //把axios挂载到原型
 Vue.prototype.$axios = axios   //this.$axios
@@ -30,10 +31,12 @@ Vue.use(vant)
 
 //路由 2.创建路由配置
 const routes = [
-    // { path:"/",component: Login },
+    { path:"/",component: Login },
     { path:"/login",component: Login },
     { path:"/register" ,component: Register },
-    { path:"/personal" ,component: Personal }
+    { path:"/personal" ,component: Personal },
+    { path:"/edit_profile" ,component: EditProfile },
+
 
 ]
 
@@ -52,7 +55,7 @@ router.beforeEach((to,from,next)=>{
     // console.log("token",hasToken)
 
     // 判断是否有权限登录
-    if(to.path === "/personal"){
+    if(to.path === "/personal" || to.path === "/edit_profile"){
         //判断本地是否有token
         if(hasToken){
             //有就跳转
@@ -74,7 +77,7 @@ axios.interceptors.response.use( res => {
     //拦截响应，做统一处理 
     let { message,statusCode } = res.data
     // console.log( message )
-    console.log(message)
+    // console.log(message)
 
     if(statusCode === 401 ){
         Toast.fail(message)

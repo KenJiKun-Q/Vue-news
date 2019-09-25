@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="profile">
+    <router-link to="/edit_profile">
+      <div class="profile">
       <!-- $axios.defaults.baseURL读取axios的服务器路径 -->
       <img :src="profile.head_img" alt />
 
@@ -13,6 +14,7 @@
       </div>
       <span class="iconfont iconjiantou1"></span>
     </div>
+    </router-link>
 
     <!-- 通用条形 -->
     <CellBar label="我的关注" text="关注的用户" />
@@ -55,7 +57,7 @@ export default {
         Authorization: localStorage.getItem("token")
       }
     }).then(res => {
-      console.log("456", res);
+      // console.log("456", res);
       let {data} = res.data;
 
       if(data){
