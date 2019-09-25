@@ -15,31 +15,46 @@
     <CellBar label="昵称" :text="profile.nickname" @click="show1 = !show1" />
     <!-- 昵称编辑输入框 -->
     <!-- 鼠标放到属性上就可以查看 -->
-    <van-dialog 
-     v-model="show1"
-     title="编辑昵称"
-     show-cancel-button
-     @confirm="handlNickname">
+    <van-dialog v-model="show1" title="编辑昵称" show-cancel-button @confirm="handlNickname">
       <!-- vaule读取昵称 -->
       <!-- v-model点击选型就会确认 使用:value-->
-        <van-field :value="profile.nickname" placeholder="请输入用户名" ref="nickname"/>
+      <van-field :value="profile.nickname" placeholder="请输入用户名" ref="nickname" />
     </van-dialog>
 
 
 
-    <CellBar label="密码" :text="profile.password" type="password" @click="show2 = !show2"/>
-     <!-- 密码编辑输入框 -->
-    <van-dialog 
-     v-model="show2"
-     title="编辑密码"
-     show-cancel-button
-     @confirm="handlPassword">
+    <!-- 密码 -->
+    <CellBar label="密码" :text="profile.password" type="password" @click="show2 = !show2" />
+    <!-- 密码编辑输入框 -->
+    <van-dialog v-model="show2" title="编辑密码" show-cancel-button @confirm="handlPassword">
       <!-- vaule读取密码 -->
-        <van-field :value="profile.password" placeholder="请输入密码" ref="password"/>
+      <van-field :value="profile.password" placeholder="请输入密码" ref="password" />
     </van-dialog>
 
 
-    <CellBar label="性别" :text="profile.gender === 1 ? '男' : '女'" />
+    <!-- 性别 -->
+    <CellBar label="性别" :text="profile.gender === 1 ? '男' : '女'" @click="show3 = !show3"/>
+
+    <!-- 性别编辑输入框 -->
+    <van-dialog
+     v-model="show3"
+     title="编辑性别"
+     show-cancel-button
+     @confirm="handlGender"
+    >
+    <van-radio-group v-model="genderCache">
+      <van-cell-group v-model="genderCache">
+        <van-cell title="男" clickable @click="genderCache = '1'">
+          <van-radio slot="right-icon" name="1" />
+        </van-cell>
+        <van-cell title="女" clickable @click="genderCache = '0'">
+          <van-radio slot="right-icon" name="0" />
+        </van-cell>
+      </van-cell-group>
+    </van-radio-group>
+</van-dialog>
+
+    
   </div>
 </template>
 
@@ -57,7 +72,11 @@ export default {
       //显示弹窗
       show1: false,
       //密码弹窗
-      show2: false
+      show2: false,
+      //性别弹窗
+      show3: false,
+      //性别缓存
+      genderCache:'0',
     };
   },
   components: {
@@ -65,35 +84,35 @@ export default {
     CellBar
   },
   methods: {
-      //请求编辑资料的接口
-      //data要提交给接口的数据
-      editProfile(data,callback){
-          if(!data) return;
-        //提交到编辑资料的接口
-        this.$axios({
-            url:"/user_update/" + localStorage.getItem('user_id'),
-            method:"POST",
-            //添加头信息
-            headers:{
-                Authorization:localStorage.getItem("token")
-            },
-            data
-        }).then(res=>{
-            let {message} = res.data
+    //请求编辑资料的接口
+    //data要提交给接口的数据
+    editProfile(data, callback) {
+      if (!data) return;
+      //提交到编辑资料的接口
+      this.$axios({
+        url: "/user_update/" + localStorage.getItem("user_id"),
+        method: "POST",
+        //添加头信息
+        headers: {
+          Authorization: localStorage.getItem("token")
+        },
+        data
+      }).then(res => {
+        let { message } = res.data;
 
-            //成功的弹窗提示
-            if(message === '修改成功'){
-                //传入的回调函数
-                // 等于callback && callback()
-                if(callback){
-                    callback()
-                }
+        //成功的弹窗提示
+        if (message === "修改成功") {
+          //传入的回调函数
+          // 等于callback && callback()
+          if (callback) {
+            callback();
+          }
 
-                //使用提示窗口
-               this.$toast.success(message)
-            }
-        })
-      },
+          //使用提示窗口
+          this.$toast.success(message);
+        }
+      });
+    },
 
     //选择完照片后的回调函数,file返回选中的图片
     afterRead(file) {
@@ -122,25 +141,37 @@ export default {
 
         // //把头像url上传到用户资料
 
-        this.editProfile({head_img: data.url})
+        this.editProfile({ head_img: data.url });
       });
     },
     //编辑昵称
-    handlNickname(){
-        //拿到input输入框的值
-        let value = this.$refs.nickname.$refs.input.value
-        // console.log(value)
-        this.editProfile({nickname:value},()=>{
-            this.profile.nickname = value
-        })
+    handlNickname() {
+      //拿到input输入框的值
+      let value = this.$refs.nickname.$refs.input.value;
+      // console.log(value)
+      this.editProfile({ nickname: value }, () => {
+        this.profile.nickname = value;
+      });
     },
     //编辑密码
-    handlPassword(){
-        //拿到input输入的值
-        let value = this.$refs.password.$refs.input.value;
-        //提交到编辑资料的接口
-        this.editProfile({password : value}, ()=>{
-            this.profile.password =value
+    handlPassword() {
+      //拿到input输入的值
+      let value = this.$refs.password.$refs.input.value;
+      //提交到编辑资料的接口
+      this.editProfile({ password: value }, () => {
+        this.profile.password = value;
+      });
+    },
+    handlGender(){
+        // console.log()
+        // 把性别转换为数字
+        let gender = +this.genderCache
+        // console.log(gender)
+    
+        //编辑性别
+        this.editProfile({ gender },() => {
+            //修改成功之后替换页面显示的性别
+            this.profile.gender = gender;
         })
     }
   },
@@ -161,6 +192,8 @@ export default {
         //将data数据保存到profile
         this.profile = data;
         // console.log(this.profile)
+        //把后台返回的性别赋值到/genderCache性别需要转为字符串
+        this.genderCache = String(data.gender)
         //判断如果用户有头像
         if (data.head_img) {
           // 有头像就使用头像
