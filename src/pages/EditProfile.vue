@@ -6,6 +6,9 @@
       <!-- 头像 -->
       <div class="head">
           <img :src="profile.head_img" alt="">
+
+          <!-- vant上传组件 -->
+          <van-uploader :after-read="afterRead" class="uploader" />
       </div>
 
       <!-- 调用条形组件 -->
@@ -33,6 +36,55 @@ export default {
     components:{
         HeaderNormal,
         CellBar,
+    },
+    methods:{
+        //选择完照片后的回调函数,file返回选中的图片
+        afterRead(file){
+            //file是上传照片后解析的数据
+            // console.log(file)
+            //构造表单数据
+            let formData = new FormData()
+            //通过表单使用append方法追加数量
+            formData.append('file',file.file)
+            
+            // 发起请求
+            this.$axios({
+                url:"/upload",
+                method:'POST',
+                //添加头信息
+                headers:{
+                    Authorization:localStorage.getItem("token"),
+                },
+                //把表单的数据上传到服务器
+                data:formData
+            }).then(res=>{
+                let {data} = res.data
+
+                //替换用户的资料头像
+                this.profile.head_img = this.$axios.defaults.baseURL + data.url;
+
+                //把头像url上传到用户资料
+                this.$axios({
+                    url:"/user_update/" + localStorage.getItem("user_id"),
+                    method:'POST',
+                    //添加头信息
+                    headers:{
+                        Authorization:localStorage.getItem("token")
+                    },
+                    data:{
+                        head_img: data.url
+                    }
+                }).then(res=>{
+                    let {message} = res.data;
+                    // console.log(res.data)
+                    //成功的窗口提示
+                    if(message === '修改成功'){
+                        this.$toast.success(message)
+                    }
+                })
+            })
+            
+        }
     },
     mounted(){
         //请求个人资料接口
@@ -71,12 +123,22 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 20px;
+        position: relative;
 
+        .uploader{
+            position: absolute;
+            opacity: 0;
+        }
         img{
             display: block;
             width: 100 / 360 * 100vw;
             height: 100 / 360 * 100vw;
             border-radius: 50%;
+        }
+
+        /deep/.van-uploader__upload{
+            width: 100 / 360 * 100vw;
+            height: 100 / 360 * 100vw;
         }
     }
 </style>
