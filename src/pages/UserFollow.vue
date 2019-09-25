@@ -3,15 +3,21 @@
         <HeaderNormal title="我的关注" />
 
         <!-- 关注用户的列表 -->
-        <div class="follow-item">
-            <img src="../../static/default_bili.jpg" alt="">
+        <!-- :key="index" 为给for每一个循环的元素打上一个标识,方便页面的数据刷新 -->
+        <div 
+        class="follow-item"
+        v-for="(item,index) in list"
+        :key="index"
+        >
+            <img :src="$axios.defaults.baseURL + item.head_img" alt="">
+           
 
             <div class="item-center">
-                <p>水星新闻</p>
+                <p>{{item.nickname}}</p>
                 <span>2019-09-26</span>
             </div>
 
-            <span class="cancel">取消关注</span>
+            <span class="cancel" @click="handelCancel(index)">取消关注</span>
         </div>
     </div>
 </template>
@@ -21,8 +27,55 @@
 import HeaderNormal from "@/components/HeaderNormal"
 
 export default {
+    data(){
+        return{
+            // 关注列表
+            list:[]
+        }
+    },
     components:{
         HeaderNormal
+    },
+    methods:{
+        // 取消关注,index当前索引
+        handelCancel(index){
+            // console.log(123)
+            //要取消关注的用户id
+            let id = this.list[index].id
+            // console.log(this.list[index])
+
+            this.$axios({
+                url:"/user_unfollow/" + id,
+                //添加头信息
+                headers:{
+                    Authorization:localStorage.getItem("token")
+                },
+            }).then(res=>{
+                let {message} = res.data;
+
+                if(message === "取消关注成功"){
+                    //从列表中删除,删除当前
+                    this.list.splice(index,1)
+                    //成功弹出提示框
+                    this.$toast.success(message)
+                }
+            })
+        }
+    },
+    mounted(){
+        //请求用户关注的列表
+        this.$axios({
+            url:"/user_follows",
+            //添加头信息
+            headers:{
+                Authorization: localStorage.getItem("token")
+            },
+        }).then(res=>{
+            let {data} = res.data;
+
+            //赋值到关注的列表
+            this.list = data
+        })
     }
 }
 </script>
