@@ -72,11 +72,11 @@ export default {
     },
 
     handleSubmit() {
-      // console.log(this.form);
+      console.log(this.form);
       axios({
         // url:"http://127.0.0.1:3000/login",
         url: "/login",
-        method: "POSt",
+        method: "POST",
         data: this.form
         //then.的回调函数相当于success
       }).then(res => {
