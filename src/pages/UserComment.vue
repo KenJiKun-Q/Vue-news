@@ -1,13 +1,9 @@
 <template>
-  <div>
+  <div class="box">
     <HeaderNormal title="我的跟帖" />
 
     <!-- 评论列表 -->
-    <div
-    class="comment-item"
-    v-for="(item,index) in list"
-    :key="index"
-    >
+    <div class="comment-item" v-for="(item,index) in list" :key="index">
       <div class="time">2019-09-27 10:20</div>
 
       <!-- 当前评论回复的评论 -->
@@ -32,76 +28,76 @@
 import HeaderNormal from "@/components/HeaderNormal";
 
 export default {
-  data(){
-      return{
-          list:[]
-      }
+  data() {
+    return {
+      list: []
+    };
   },
   components: {
     HeaderNormal
   },
-  mounted(){
-      //请求评论列表
-      this.$axios({
-          url:"/user_comments",
-          //添加头信息
-          headers:{
-              Authorization: localStorage.getItem("token")
-          }
-      }).then(res=>{
-          let {data} = res.data
+  mounted() {
+    //请求评论列表
+    this.$axios({
+      url: "/user_comments",
+      //添加头信息
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    }).then(res => {
+      let { data } = res.data;
 
-          this.list = data
-          console.log(data)
-      })
+      this.list = data;
+      console.log(data);
+    });
   }
 };
 </script>
 
 <style scoped lang="less">
-.comment-item {
-  padding: 10px 20px;
-  font-size: 10px;
-  line-height: 1.8;
-  border-bottom: 1px solid #ccc;
+  .comment-item {
+    padding: 10px 20px;
+    font-size: 10px;
+    line-height: 1.8;
+    border-bottom: 1px solid #ccc;
 
-  .time {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 5px;
-  }
-
-  .parent {
-    background: #eee;
-    padding: 10px;
-    margin-bottom: 5px;
-
-    .parent-title {
+    .time {
       font-size: 12px;
       color: #999;
+      margin-bottom: 5px;
     }
-    .parent-content {
+
+    .parent {
+      background: #eee;
+      padding: 10px;
+      margin-bottom: 5px;
+
+      .parent-title {
+        font-size: 12px;
+        color: #999;
+      }
+      .parent-content {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+
+    .content {
+      margin-bottom: 5px;
+    }
+
+    .article-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 12px;
       color: #999;
+
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
-
-  .content {
-    margin-bottom: 5px;
-  }
-
-  .article-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: #999;
-
-    p {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-}
 </style>
