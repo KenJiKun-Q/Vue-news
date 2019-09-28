@@ -22,6 +22,7 @@ import UserComment from "@/pages/UserComment"
 
 // 首页类
 import Index from "@/pages/Index"
+import PostDetail from "@/pages/PostDetail"
 
 //把axios挂载到原型
 Vue.prototype.$axios = axios   //this.$axios
@@ -44,10 +45,11 @@ const routes = [
     { path:"/edit_profile" ,component: EditProfile },
     { path:"/user_forllow" ,component: UserFollow },
     { path:"/user_comment" ,component: UserComment },
-    { path:"/user_comment" ,component: UserComment },
+    { path:"/post_detail/:id" ,component: PostDetail },
 
 
     { path:"/" ,component: Index },
+    { path:"/post_detail" ,component: PostDetail },
 
 ]
 
