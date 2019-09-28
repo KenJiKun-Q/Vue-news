@@ -23,7 +23,9 @@
         controls
         poster="https://timgmb04.bdimg.com/timg?searchbox_feed&quality=100&wh_rate=0&size=b576_324&ref=http%3A%2F%2Fwww.baidu.com&sec=1568739067&di=612dd27cae470b93b01a4b32ef72fbac&src=http%3A%2F%2Fpic.rmb.bdstatic.com%2Fe18c6ffa079441431f8988ca4c3ac106.jpeg"
       ></video>
-
+      <span 
+      class="iconfont iconjiantou2 video-back"
+      @click="$router.back()"></span>
       <div class="video-info">
         <div class="video-user">
           <img :src="$axios.defaults.baseURL + detail.user.head_img" alt />
@@ -70,7 +72,7 @@ export default {
   methods: {
     handleFollow() {
       //   通过id关注用户
-      console.log(12)
+      console.log(12);
       this.$axios({
         url: "/user_follows/" + this.detail.user.id,
         //添加头信息
@@ -120,20 +122,19 @@ export default {
         const { message } = res.data;
 
         if (message === "点赞成功") {
-        // 修改关注的按钮的状态
-        // this.detail.has_like = !this.detail.has_like;
-        this.detail.has_like = true
-        this.detail.like_length++        
+          // 修改关注的按钮的状态
+          // this.detail.has_like = !this.detail.has_like;
+          this.detail.has_like = true;
+          this.detail.like_length++;
         }
 
         if (message === "取消成功") {
-        // 修改关注的按钮的状态
-        // this.detail.has_like = !this.detail.has_like;
-        this.detail.has_like = false
-        this.detail.like_length--        
+          // 修改关注的按钮的状态
+          // this.detail.has_like = !this.detail.has_like;
+          this.detail.has_like = false;
+          this.detail.like_length--;
         }
         this.$toast.success(message);
-
       });
     },
     //文章收藏
@@ -208,6 +209,19 @@ video {
     width: 30 / 306 * 100vw;
     border-radius: 50%;
     margin-right: 10px;
+  }
+}
+.video-wrap {
+    position: relative;
+  .video-back {
+    display: flex;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    // background: #000;
   }
 }
 
