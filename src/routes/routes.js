@@ -9,6 +9,7 @@ import UserComment from "@/pages/UserComment"
 // 首页类
 import Index from "@/pages/index/Index.vue"
 import PostDetail from "@/pages/PostDetail"
+import Comment from "@/pages/comment/Index.vue"
 
 
 //路由 2.创建路由配置
@@ -23,7 +24,7 @@ const routes = [
 
 
     { path:"/" ,component: Index },
-    { path:"/post_detail" ,component: PostDetail },
+    { path:"/post_comment/:id" ,component: Comment },
 
 ]
 

@@ -4,10 +4,12 @@
     <div class="footer" v-show="!isFocus">
       <input type="text" placeholder="写跟帖" @focus="handleFocus" />
 
-      <span class="comment">
-        <em>{{post.comment_length}}</em>
-        <i class="iconfont iconpinglun-"></i>
-      </span>
+      <router-link :to="`/post_comment/${post.id}`">
+        <span class="comment">
+          <em>{{post.comment_length}}</em>
+          <i class="iconfont iconpinglun-"></i>
+        </span>
+      </router-link>
 
       <!-- 收藏功能 -->
       <i
@@ -118,7 +120,7 @@ export default {
       font-size: 24px;
     }
   }
-  .star_active{
+  .star_active {
     color: red;
   }
 }
