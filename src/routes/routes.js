@@ -6,7 +6,6 @@ import UserFollow from "@/pages/UserFollow"
 import UserComment from "@/pages/UserComment"
 
 
-// 首页类
 import Index from "@/pages/index/Index.vue"
 import PostDetail from "@/pages/PostDetail"
 import Comment from "@/pages/comment/Index.vue"
