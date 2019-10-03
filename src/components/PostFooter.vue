@@ -2,8 +2,7 @@
   <div class="footer-wrap">
     <!-- 普通页脚 -->
     <div class="footer" v-show="!isFocus">
-      <input type="text" placeholder="写跟帖"
-      @focus="handleFocus" />
+      <input type="text" placeholder="写跟帖" @focus="handleFocus" />
 
       <router-link :to="`/post_comment/${post.id}`">
         <span class="comment">
@@ -24,13 +23,13 @@
     <!-- 输入评论页脚,这里是显示隐藏必须用v-show,原因是为了获得textarea的元素 -->
     <div class="footer-comment" v-show="isFocus">
       <textarea
-      rows="3"
-      ref="textarea"
-      @blur="handleBlur"
-      v-model="value"
-      :placeholder="placeholder"
-      :autofocus="isFocus">
-      </textarea>
+        rows="3"
+        ref="textarea"
+        @blur="handleBlur"
+        v-model="value"
+        :placeholder="placeholder"
+        :autofocus="isFocus"
+      ></textarea>
       <span @click="handleSubmit">发送</span>
     </div>
   </div>
@@ -42,19 +41,22 @@ export default {
     return {
       isFocus: false,
       // 评论的内容
-      value:"",
+      value: "",
       // 输入框的提示文字
-      placeholder:"写跟帖"
+      placeholder: "写跟帖"
     };
   },
-  props: ["post","replyComment"],
+  props: ["post", "replyComment"],
+  watch: {
+    replyComment() {
+      // this.isFocus = true;
+      // this.placeholder = '@' + this.replyComment.user.nickname
 
-
-  
-  watch:{
-    replyComment(){
-      this.isFocus = true;
-      this.placeholder = '@' + this.replyComment.user.nickname
+      // 评论回复有值的时候才显示@的用户名
+      if (this.replyComment) {
+        this.isFocus = true;
+        this.placeholder = "@" + this.replyComment.user.nickname;
+      }
     }
   },
   methods: {
@@ -63,46 +65,58 @@ export default {
       this.isFocus = true;
       // console.log(123)
     },
-    handleBlur(){
-      if(!this.value){
+    handleBlur() {
+      if (!this.value) {
         this.isFocus = false;
+
+        //如果有回复的评论,清空回复的评论
+        if (this.replyComment) {
+          this.$emit("handleReply", null);
+          this.placeholder = "写跟帖";
+        }
       }
     },
     // 发布评论
-    handleSubmit(){
+    handleSubmit() {
       // console.log(this.value)
-      if(!this.value){
+      if (!this.value) {
         return;
       }
 
+      // 评论的参数
+      let data = {
+        content:this.value
+      }
+
+      //如果有回复的评论,加上id
+      if(this.replyComment){
+        data.parent_id = this.replyComment.id;
+      }
+
       this.$axios({
-        url:"/post_comment/" + this.post.id,
-        method:"POST",
-        headers:{
+        url: "/post_comment/" + this.post.id,
+        method: "POST",
+        headers: {
           Authorization: localStorage.getItem("token")
         },
-        data:{
-          content:this.value
-        }
-      }).then(res=>{
+        data
+      }).then(res => {
         // console.log(res.data)
 
-        let {message} = res.data
+        let { message } = res.data;
 
-        if(message == "评论发布成功"){
+        if (message == "评论发布成功") {
           // 触发父组件方法更新评论的列表
-          this.$emit("getComments",this.post.id)
+          this.$emit("getComments", this.post.id,"isReply");
           //隐藏输入框
           this.isFocus = false;
           //清空输入框
           this.value = "";
 
           // 滚动到底部
-          window.scrollTo(0,document.body.offsetHeight)
-
-          this.$toast.success(message)
+          window.scrollTo(0, 0);
         }
-      })
+      });
     }
   }
 };
