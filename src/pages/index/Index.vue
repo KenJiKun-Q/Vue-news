@@ -5,10 +5,12 @@
       <!-- 左边图标 -->
       <span class="iconfont iconnew logo"></span>
       <!-- 中间搜索模块 -->
-      <div class="header-search">
-        <span class="iconfont iconsearch ico-search"></span>
-        <i>搜索新闻</i>
-      </div>
+      <router-link to="/search" class="header-search">
+        <div>
+          <span class="iconfont iconsearch ico-search"></span>
+          <i>搜索新闻</i>
+        </div>
+      </router-link>
       <!-- 右边个人中心图标 -->
       <router-link to="/personal">
         <span class="iconfont iconwode personal"></span>
@@ -40,11 +42,11 @@
 </template>
 
 <script>
-import config from "./index.js"
+import config from "./index.js";
 
-export default config
+export default config;
 </script>
 
 <style scoped lang="less">
-  @import url("./index.less");
+@import url("./index.less");
 </style>

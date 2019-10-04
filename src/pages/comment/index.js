@@ -21,7 +21,7 @@ export default {
             loading:false,
             finished:false,
             pageIndex:1,
-            pageSize:20,
+            pageSize:5,
         }
     },
 
@@ -35,6 +35,8 @@ export default {
     methods: {
         //请求评论的列表
         getComments(id,isReply) {
+
+
             if(isReply === "isReply"){
                 this.pageIndex = 1;
                 this.comments = []
@@ -42,11 +44,11 @@ export default {
 
             // 请求文章列表
             this.$axios({
-                // 条数默认是20
+                // 条数默认是10
                 url: `/post_comment/${id}?pageIndex=${this.pageIndex}`,
             }).then(res => {
                 let { data } = res.data
-
+                // console.log(data)
                 //覆盖评论的列表
                 this.comments = [...this.comments,...data];
 
@@ -70,7 +72,7 @@ export default {
         onLoad(){
             setTimeout(()=>{
                 //文章的id
-                let id = this.$route.params
+                let {id} = this.$route.params
                 // 请求下一页的数据
                 this.getComments(id)
             },1000)

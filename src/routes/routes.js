@@ -9,6 +9,7 @@ import UserComment from "@/pages/UserComment"
 import Index from "@/pages/index/Index.vue"
 import PostDetail from "@/pages/PostDetail"
 import Comment from "@/pages/comment/Index.vue"
+import Search from "@/pages/Search.vue"
 
 
 //路由 2.创建路由配置
@@ -24,6 +25,7 @@ const routes = [
 
     { path:"/" ,component: Index },
     { path:"/post_comment/:id" ,component: Comment },
+    { path:"/search" ,component: Search },
 
 ]
 
