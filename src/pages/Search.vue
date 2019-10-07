@@ -26,6 +26,7 @@
 import PostCard from "@/components/PostCard"
 
 export default {
+    name:"search",
     data(){
         return{
             // 搜索关键字
@@ -48,7 +49,19 @@ export default {
             })
         }
     },
-   
+   // 组件内的路由守卫，判断如果是首页进入到搜索页的，清空页面的缓存数据
+   beforeRouteEnter(to,from,next){
+       if(from.path === "\/"){
+           //在渲染该组件的对应路由被confirm前调用
+           //不能获取组件实例,this需要在next回调函数里获取
+           next(vm=>{
+               vm.keyword = ""
+               vm.list = []
+           })
+       }else{
+           next()
+       }
+   }
 };
 </script>
 

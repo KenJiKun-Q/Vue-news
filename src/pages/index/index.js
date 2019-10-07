@@ -2,6 +2,7 @@ import PostCard from "@/components/PostCard";
 
 
 export default {
+    name:"index",
     data() {
         return {
             //当前默认的栏目,没有登录是0,有登录为1,最终的效果是为了默认显示头条

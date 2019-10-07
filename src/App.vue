@@ -1,7 +1,10 @@
 <template>
   <div>
       <!-- 组件占位符 -->
-      <router-view></router-view>
+      <keep-alive include="index,search">
+        <router-view></router-view>
+      </keep-alive>
+
   </div>
 </template>
 
